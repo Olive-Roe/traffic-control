@@ -85,21 +85,48 @@ def board():
   t.hideturtle()
   t.speed(1)
 
+LIGHTS = "lr"
 
 def t_lights():
+  global LIGHTS
   light1 = turtle.Turtle()
-  light1.color("green")
-  time
-    time.time()
-    s = time.time()
-    e = time.time()
-    num1 = e-s
-    if num1%5 == 0 and num1%10 == 0:
-      c = green
-      light1.color(c)
-    elif num1%5==0:
-      c = red
-      light.color(c)
+  light2 = turtle.Turtle()
+  light3 = turtle.Turtle()
+  light4 = turtle.Turtle()
+  light1.penup()
+  light2.penup()
+  light3.penup()
+  light4.penup()
+  light1.goto(-40, 0)
+  light2.goto(0, 40)
+  light3.goto(40, 0)
+  light4.goto(0, -40)
+  light1.shape("circle")
+  light2.shape("circle")
+  light3.shape("circle")
+  light4.shape("circle")
+  light1.turtlesize(0.5)
+  light2.turtlesize(0.5)
+  light3.turtlesize(0.5)
+  light4.turtlesize(0.5)
+  def leftright():
+    light1.color("green")
+    light2.color("red")
+    light3.color("green")
+    light4.color("red")
+  def updown():
+    light1.color("red")
+    light2.color("green")
+    light3.color("red")
+    light4.color("green")
+  while True:
+    leftright()
+    LIGHTS = "lr"
+    time.sleep(5)
+    updown()
+    LIGHTS = "ud"
+    time.sleep(5)
+    
     
     
 def set_cars():
@@ -201,4 +228,5 @@ def speed_cars():
 
 
 board()
+t_lights()
 #set_cars()
