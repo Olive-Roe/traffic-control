@@ -1,15 +1,12 @@
-"""
-Check out the official docs here: https://docs.python.org/3/library/turtle.html
-"""
 import turtle
 import time
-from time import time as timenow
+import random
 from math import sqrt
 
-# calculate the postition of each car from their trajectory per second
-# calculate a radius of the car where other cars should not come within
+# CREATING DISPLAY
+
 sc = turtle.Screen()
-t = turtle.Turtle()
+turtle1 = turtle.Turtle()
 car1 = turtle.Turtle()
 car2 = turtle.Turtle()
 car3 = turtle.Turtle()
@@ -18,75 +15,80 @@ car1.color("red")
 car2.color("blue")
 car3.color("orange")
 car4.color("magenta")
+car1.hideturtle()
+car2.hideturtle()
+car3.hideturtle()
+car4.hideturtle()
 
 
 def board():
-    t.speed(0)
-    t.penup()
-    t.setposition(-40, -250)
-    t.pendown()
+    "Set up the graphical display (background)"
+    turtle1.speed(0)
+    turtle1.penup()
+    turtle1.setposition(-40, -250)
+    turtle1.pendown()
 
     def lane():
-        t.left(90)
-        t.forward(190)
-        t.circle(20, 90)
-        t.forward(190)
-        t.right(90)
+        turtle1.left(90)
+        turtle1.forward(190)
+        turtle1.circle(20, 90)
+        turtle1.forward(190)
+        turtle1.right(90)
     for i in range(4):
         lane()
-        t.penup()
-        t.forward(80)
-        t.right(180)
-        t.pendown()
+        turtle1.penup()
+        turtle1.forward(80)
+        turtle1.right(180)
+        turtle1.pendown()
 
-    t.penup()
-    t.setposition(0, -250)
-    t.pendown()
+    turtle1.penup()
+    turtle1.setposition(0, -250)
+    turtle1.pendown()
 
     def d():
-        t.left(90)
-        t.forward(210)
+        turtle1.left(90)
+        turtle1.forward(210)
     for i in range(4):
         d()
-        t.penup()
-        t.forward(40)
-        t.left(90)
-        t.forward(250)
-        t.pendown()
-        t.right(270)
+        turtle1.penup()
+        turtle1.forward(40)
+        turtle1.left(90)
+        turtle1.forward(250)
+        turtle1.pendown()
+        turtle1.right(270)
 
-    t.penup()
-    t.setposition(0, -250)
-    t.pendown()
+    turtle1.penup()
+    turtle1.setposition(0, -250)
+    turtle1.pendown()
 
     def grass():
-        t.penup()
-        t.backward(40)
-        t.left(90)
-        t.pendown()
-        t.color("green")
-        t.begin_fill()
-        t.forward(190)
-        t.circle(20, 90)
-        t.forward(190)
-        t.left(90)
-        t.forward(210)
-        t.left(90)
-        t.forward(210)
-        t.end_fill()
+        turtle1.penup()
+        turtle1.backward(40)
+        turtle1.left(90)
+        turtle1.pendown()
+        turtle1.color("green")
+        turtle1.begin_fill()
+        turtle1.forward(190)
+        turtle1.circle(20, 90)
+        turtle1.forward(190)
+        turtle1.left(90)
+        turtle1.forward(210)
+        turtle1.left(90)
+        turtle1.forward(210)
+        turtle1.end_fill()
 
     for i in range(4):
         grass()
-        t.penup()
-        t.left(90)
-        t.forward(250)
-        t.left(90)
-        t.forward(210)
-        t.left(90)
-        t.pendown()
-    t.color("black")
-    t.hideturtle()
-    t.speed(1)
+        turtle1.penup()
+        turtle1.left(90)
+        turtle1.forward(250)
+        turtle1.left(90)
+        turtle1.forward(210)
+        turtle1.left(90)
+        turtle1.pendown()
+    turtle1.color("black")
+    turtle1.hideturtle()
+    turtle1.speed(1)
 
 
 def set_cars():
@@ -108,6 +110,7 @@ def set_cars():
 
 
 def set_cars_manually():
+    "Unused function to set 4 cars' positions manually (userinput)"
     car1_x = int(
         input("Please enter an x coordiante for car 1 (range -250 to -40): "))
     car2_y = int(
@@ -134,11 +137,11 @@ def set_cars_manually():
 ID_TABLE = {"1": car1,
             "2": car2,
             "3": car3,
-            "4": car4,
-            }
+            "4": car4}
 
 
 def set_car(id, x, y):
+    "Set a single car with an id at (x, y)"
     car = ID_TABLE[id]
     car.penup()
     car.setpos(x, y)
@@ -146,6 +149,7 @@ def set_car(id, x, y):
 
 
 def stamp_car(id, x, y):
+    "Move a car to (x, y) and stamp (leave a copy of itself on the background)"
     car = ID_TABLE[id]
     car.penup()
     car.setpos(x, y)
@@ -154,6 +158,7 @@ def stamp_car(id, x, y):
 
 
 def set_custom_cars(x1, y1, x2, y2, x3, y3, x4, y4):
+    "Set four cars' positions by code"
     car1.penup()
     car1.setposition(x1, y1)
     car1.pendown()
@@ -174,12 +179,13 @@ DATA = {"1": [],
         "2": [],
         "3": [],
         "4": []}
-TRAJECTORIES = {"1": '',
-                "2": '',
-                "3": '',
-                "4": ''}
 
-# FIXME: t is used by global turtle as well as time
+TRAJECTORIES = {"1": [],
+                "2": [],
+                "3": [],
+                "4": []}
+
+# collision detection from starting values, not used in the end (instead trajectory formulas were tested)
 
 
 def collision(dx, dy, vx, vy, ax, ay, b):
@@ -216,8 +222,8 @@ def get_initial_values(data):
          (dylist[1]-dylist[0])/(timelist[1]-timelist[0]))
     v2 = ((dxlist[2]-dxlist[1])/(timelist[2]-timelist[1]),
           (dylist[2]-dylist[1])/(timelist[2]-timelist[1]))
-    a = ((v2[0]-v[0])/(timelist[2]-timelist[0]),
-         (v2[1]-v[1])/(timelist[2]-timelist[0]))
+    a = ((v2[0]-v[0])/(timelist[2]-timelist[1]),
+         (v2[1]-v[1])/(timelist[2]-timelist[1]))
     return d, v, a
 
 
@@ -232,6 +238,7 @@ def _distance(x1, y1, x2, y2):
 
 
 def _inbounds(coord):
+    "Checks if a coordinate is within the boundaries of the model"
     return (coord >= -240 and coord <= 240)
 
 
@@ -276,6 +283,7 @@ def min_dist(f, g, step=0.05):
 
 
 def draw_trajectory(id, f, step=0.1):
+    "Given the id of a car and its displacement function, draws its trajectory by stamping at fixed intervals"
     time = 0
     while True:
         time += step
@@ -286,13 +294,14 @@ def draw_trajectory(id, f, step=0.1):
         stamp_car(id, d[0], d[1])
 
 
-def draw_trajectories(ids, fs, step=0.1):
+def draw_trajectories(ids, functions, step=0.1):
+    "Draws trajectories from a lists of ids and displacement functions"
     time = 0
     running = True
     while running:
         for index, num in enumerate(ids):
             time += step
-            d = fs[index](time)
+            d = functions[index](time)
             if not(_inbounds_from_list([d[0], d[1]])):
                 # out of bounds
                 running = False
@@ -300,12 +309,14 @@ def draw_trajectories(ids, fs, step=0.1):
 
 
 def draw(number):
+    "Draws the trajectory of a car given its unique car id (number) and measurements, calculating its trajectory"
     d, v, a = get_initial_values(DATA[number])
     f = get_trajectory(d, v, a)
     draw_trajectory(number, f)
 
 
 def draw_multiple(numbers):
+    "Draws the trajectories of multiple cars given measurements (data points)"
     functions = []
     for num in numbers:
         d, v, a = get_initial_values(DATA[num])
@@ -316,6 +327,7 @@ def draw_multiple(numbers):
 
 
 def _divide_without_zde(a, b):
+    "An internal function to divide a/b, but if b=0, it will return 0 (used for the braking deceleration function)"
     try:
         return a/b
     except ZeroDivisionError:
@@ -328,49 +340,53 @@ def getvals_for_stop(v, d):
     a = (_divide_without_zde((-v[0]**2), (4*d[0])),
          _divide_without_zde((-v[1]**2), (4*d[1])))
     # safe division which ignores 0 to account for zero division error
-    # tuple for 2d vector
-    return d, v, a
+    # finds the acceleration and returns it
+    return a
+
+
+def check_all_trajectories(traj):
+    "Takes a trajectory, returns True if path works, 'stop' if there is a collision"
+    for i in TRAJECTORIES:
+        if TRAJECTORIES[i] != traj and TRAJECTORIES[i] != [] and collision_from_trajectory(traj, TRAJECTORIES[i], 10):
+            return "stop"
+    return True
+
+
+def check_all_collisions(car_number):
+    "Takes an id, returns True if path (from trajectories dict) works, 'stop' if there is a collision"
+    f = TRAJECTORIES[car_number]
+    for i in CARS:
+        if i != car_number and TRAJECTORIES[i] != [] and collision_from_trajectory(f, TRAJECTORIES[i], 10):
+            DATA[car_number] = []  # reset data as trajectory changes
+            # find values and tell car to slow down (stop by intersection)
+            return "stop"
+    return True
 
 
 def add_data_and_check(car_number, displacement, time):
-    "Add data point, return False if not enough data, True if path works"
-    if car_number in DATA:
-        DATA[car_number].append((displacement[0], displacement[1], time))
-    else:
-        # does not exist yet, add a new entry
-        DATA[car_number] = [(displacement[0], displacement[1], time)]
-    if len(DATA[car_number]) == 3:
-        # can determine trajectory
-        d, v, a = get_initial_values(DATA[car_number])
-        f = get_trajectory(d, v, a)
-        TRAJECTORIES[car_number] = f
-        print(d, v, a, TRAJECTORIES, DATA)
-        print(
-            f"d:{d}, v:{v}, a:{a}, traj:{TRAJECTORIES[car_number]}, data:{DATA[car_number]}")
-        for i in ['1', '2', '3', '4']:
-            if i != car_number and TRAJECTORIES[i] != '':
-                # there is a collision path
-                if collision_from_trajectory(f, TRAJECTORIES[i], 10):
-                    DATA[car_number] = []  # reset data as trajectory changes
-                    # find values and tell car to slow down (stop by intersection)
-                    return getvals_for_stop(v, closest_braking(d))
-        else:  # no collision
-            return True
-    else:
+    "Add data point, return False if not enough data, True if path works, 'stop' if there is a collision"
+    DATA[car_number].append((displacement[0], displacement[1], time))
+    if len(DATA[car_number]) != 3:
         return False
+    # can determine trajectory
+    d, v, a = get_initial_values(DATA[car_number])
+    f = get_trajectory(d, v, a)
+    TRAJECTORIES[car_number] = f
+    return check_all_collisions(car_number)
 
 
-def remove_trajectory():
-    # if car is out of bounds (successful intersection), remove its trajectory from global dict
-    pass
+def remove_trajectory(name):
+    "If car is out of bounds (successful intersection), remove its trajectory data from global dicts"
+    del(TRAJECTORIES[name])
+    del(DATA[name])
+    del(CARS[name])
 
 
 def closest_braking(disp):
     "Given a displacement, calculate the nearest distance to the closest braking point"
     x, y = disp
     closest = float("inf")
-    # braking points are (-40, 20), (40, 20), (20, 40), (-20, -40)
-    # beginning of intersection
+    # braking points (at the beginning of intersections) are (-40, 20), (40, 20), (20, 40), (-20, -40) 
     for tup in [(-40, 20), (40, 20), (20, 40), (-20, -40)]:
         x1, y1 = tup
         d = _distance(x, y, x1, y1)
@@ -381,100 +397,260 @@ def closest_braking(disp):
 
 
 CARS = {}
+CHECK_POINTS = [(-230, 20), (-220, 20), (-210, 20), (230, -20), (-230, -20), (230, 20),
+                (220, -20), (-220, -20), (220, 20), (210, -20), (-210, -20), (210, 20)]
+BRAKE_POINTS = [(-100, 20), (100, -20), (-100, -20), (100, 20)]
+
+
+def _invert(coord):
+    "An internal function to return the four rotations of a coordinate around the intersection (for all 4 cars)"
+    return [(coord[0]*-1, coord[1]*-1), (coord[0], coord[1]*-1), (coord[0]*-1, coord[1])]
 
 
 class Car:
-    def __init__(self, name, direction, d, v, a, color="red"):
+    def __init__(self, name, direction, d, v, a, color="red", delay=0):
         # d, v, a refer to initial displacement, velocity, and acceleration
         self.turtle = turtle.Turtle()
         self.turtle.color(color)
+        self.turtle.speed(0)
         self.turtle.setheading(direction)
-        # 0 down, 90 right, 180 up, 270 left
+        self.direction = direction
+        self.turtle.penup()
+        self.turtle.goto(d)
         # 0 right, 90 up, 180 left, 270 down
         self.name = name
         CARS[name] = self
+        DATA[name] = []
+        TRAJECTORIES[name] = []
         self.x, self.y = d
         self.d = d
         self.v = v
         self.current_v = v
         self.a = a
-        self.traj = get_trajectory(d, v, a)
+        self.braking = False
+        # True for positive, True for negative
+        self.delay = delay
+        self.stopping = False
+        self.update_trajectory()
+        self.check(0)
+        self.last_check_time = time.time()
 
     def display_trajectory(self):
         draw_trajectory(self.name, self.traj)
 
     def update_trajectory(self):
-        self.traj = get_trajectory(self.d, self.v, self.a)
+        traj = get_trajectory(self.d, self.v, self.a)
+        self.traj = traj
+        DATA[self.name] = []
+        TRAJECTORIES[self.name] = self.traj
 
-    def measure(self):
+    def check(self, t):
+        TRAJECTORIES[self.name]
+        t -= self.delay
+        self.current_v = (self.v[0] + self.a[0]*t,
+                          self.v[1] + self.a[1]*t)
+        traj = get_trajectory((self.x, self.y), self.current_v, self.a)
+        if check_all_trajectories(traj) == "stop":
+            TRAJECTORIES[self.name] = []
+            if not(self.braking):
+                self.brake(t)
+            self.last_check_time = time.time()
+            self.stopping = True
+        elif self.stopping:
+            self.accelerate(t)
+            self.stopping = False
+
+    def measure(self, t):
         result = add_data_and_check(self.name, (self.x, self.y), time.time())
         if result not in [True, False]:
             # there is a collision path, follow braking trajectory
-            d, v, a = result
-            self.a = a
-            self.update_trajectory()
-            print("braking", self.d, self.v, self.a)
-        print("going", self.d, self.v, self.a)
+            self.brake(t)
 
-    def brake(self):
-        d, v, a = getvals_for_stop(
-            self.current_v, closest_braking((self.x, self.y)))
-        print(closest_braking((self.x, self.y)))
-        self.a = a
+    def coast(self, t):
+        self.a = (0, 0)
+        self.v = self.current_v  # set initial speed to current speed
+        self.d = (self.x, self.y)  # set initial disp to current disp
         self.update_trajectory()
-        print("braking", (self.x, self.y), self.v, self.a)
+        self.braking = True
+        self.delay += t
+        # set a new trajectory, time is now 0
 
-    def goto(self, time):
-        x, y = self.traj(time)
+    def brake(self, t):
+        a = getvals_for_stop(
+            self.current_v, closest_braking((self.x, self.y)))
+        self.a = a
+        self.v = self.current_v  # set initial speed to current speed
+        self.d = (self.x, self.y)  # set initial disp to current disp
+        self.update_trajectory()
+        self.braking = True
+        self.delay += t
+        # set a new trajectory, time is now 0
+
+    def accelerate(self, t):
+        self.braking = False
+        self.d = (self.x, self.y)
+        # t -= self.delay
+        self.current_v = (self.v[0] + self.a[0]*t,
+                          self.v[1] + self.a[1]*t)
+        # self.v = (0, 0)
+        self.v = self.current_v
+        if self.direction == 0:
+            self.a = (5, 0)
+        elif self.direction == 90:
+            self.a = (0, 5)
+        elif self.direction == 180:
+            self.a = (-5, 0)
+        elif self.direction == 270:
+            self.a = (0, -5)
+        self.update_trajectory()
+        self.delay = t
+
+    def goto(self, t):
+        t -= self.delay
+        # for multiple trajectories, time of new trajectory is the delay
+        if self.braking:
+            x1, y1 = closest_braking((self.x, self.y))
+            if _distance(x1, y1, self.x, self.y) < 50:
+                self.d = (self.x, self.y)
+                self.v = (0, 0)
+                self.a = (0, 0)
+                self.delay += t
+                self.update_trajectory()
+                self.braking = False
+        x, y = self.traj(t)
         self.turtle.penup()
         self.turtle.goto(x, y)
-        self.turtle.pendown()
         self.x = x
         self.y = y
-        self.current_v = (self.v[0] + self.a[0]*time,
-                          self.v[1] + self.a[1]*time)
+        self.current_v = (self.v[0] + self.a[0]*t,
+                          self.v[1] + self.a[1]*t)
+        if self.direction == 0:
+            if len(DATA[self.name]) < 3:
+                # access the x cooordinate of last measurement
+                if DATA[self.name] == []:
+                    self.measure(t)
+                elif self.x > DATA[self.name][-1][0] + 10:
+                    self.measure(t)
+            if TL_ON:
+                if LIGHTS == "ud" and self.x > -150:
+                    self.brake(t)
+                    self.stopping = True
+                if LIGHTS == "lr" and self.stopping:
+                    self.accelerate(t)
+                    self.stopping = False
+            else: # traffic lights are not being used
+                if self.stopping and (time.time() - self.last_check_time) > 1:
+                    self.check(t)
+                    self.stopping = False
 
 
 def run_cars(start=0, stop=10, step=0.05):
-    time = start
-    measures = 0
-    last = timenow()
-    CARS["5"].brake()
-    while time < stop:
-        # if measures < 3 and timenow() > last+1:
-        #     CARS["5"].measure()
-        #     CARS["6"].measure()
-        #     measures += 1
-        #     last = timenow()
+    "Simulate several cars simultaneously for a set period of simulation time"
+    t = start
+    while t < stop:
         for car_id in CARS:
             car = CARS[car_id]
-            car.goto(time)
-        time += step
-    print(CARS["5"].x)
+            car.goto(t)
+            if TL_ON:
+                update_lights()
+        t += step
 
 
-add_data("1", (-230, 20), 0)
-add_data("1", (-211, 20), 1)
-add_data("1", (-182, 20), 2)
+COLORS = ['red', 'blue', 'green', 'magenta', 'teal', 'black']
 
-add_data("2", (-20, -230), 0)
-add_data("2", (-20, -220), 1)
-add_data("2", (-20, -200), 2)
 
-add_data("3", (230, -20), 0)
-add_data("3", (211, -19), 1)
-add_data("3", (182, -18), 2)
+def generate_random_car(name):
+    # def __init__(self, name, direction, d, v, a, color="red"):
+    # 0 right, 90 up, 180 left, 270 down
+    l = [(0, (-230, 20), (10, 0), (10, 0)), (90, (-20, -230), (0, 10), (0, 10)), (180,
+                                                                                  (230, -20), (-10, 0), (-10, 0)), (270, (20, 230), (0, -10), (0, -10))]
+    direction, d, v, a = random.choice(l)
+    b = Car(name, direction, d, v, a, random.choice(
+        COLORS))
 
-add_data("4", (20, 230), 0)
-add_data("4", (20, 220), 1)
-add_data("4", (20, 200), 2)
+def generate_random_cars_left():
+    for n in range(5):
+        Car(str(n+5), 0, (-230-n*20, 20), (10, 0),
+            (10, 0), random.choice(COLORS))
+    run_cars()
 
-board()
-# set_cars()
+# TRAFFIC LIGHT CODE
 
-c1 = Car("5", 0, (-230, 20), (19, 0), (10, 0), "magenta")
-c2 = Car("6", 270, (20, 230), (0, -10), (0, -10), "red")
-run_cars(0, 20)
 
-#draw_multiple(["1", "2", "3", "4"])
-sc.exitonclick()
+TL_ON = True
+LIGHTS = "lr"
+
+
+def setup_tl():
+    global START_TIME, light1, light2, light3, light4
+    START_TIME = time.time()
+    light1 = turtle.Turtle()
+    light2 = turtle.Turtle()
+    light3 = turtle.Turtle()
+    light4 = turtle.Turtle()
+    light1.penup()
+    light2.penup()
+    light3.penup()
+    light4.penup()
+    light1.goto(-40, 0)
+    light2.goto(0, 40)
+    light3.goto(40, 0)
+    light4.goto(0, -40)
+    light1.shape("circle")
+    light2.shape("circle")
+    light3.shape("circle")
+    light4.shape("circle")
+    light1.turtlesize(0.5)
+    light2.turtlesize(0.5)
+    light3.turtlesize(0.5)
+    light4.turtlesize(0.5)
+
+
+def leftright():
+    global LIGHTS
+    light1.color("green")
+    light2.color("red")
+    light3.color("green")
+    light4.color("red")
+    LIGHTS = "lr"
+
+
+def updown():
+    global LIGHTS
+    light1.color("red")
+    light2.color("green")
+    light3.color("red")
+    light4.color("green")
+    LIGHTS = "ud"
+
+
+def update_lights(delay=5):
+    "Graphically updates the traffic lights depending on the delay (s)"
+    now = time.time()
+    if (now-START_TIME) % (delay*2) >= delay and LIGHTS == "lr":
+        updown()
+    elif (now-START_TIME) % (delay*2) < delay and LIGHTS == "ud":
+        leftright()
+
+def main():
+    board()
+    'testing responsiveness to future collisions'
+    if TL_ON:
+        setup_tl()
+    c1 = Car("5", 0, (-230, 20), (19, 0), (10, 0), "magenta")
+    c2 = Car("6", 270, (20, 230), (0, -10), (0, -10), "red")
+    run_cars(stop=20)
+
+    'testing multiple cars in different lanes (distance between cars is incomplete)'
+    # for n in range(5):
+    #     generate_random_car(str(n+5))
+    # run_cars()
+
+    'testing multiple cars on one lane (collisions between cars on the same lane happen)'
+    # if TL_ON:
+    #     setup_tl()
+    # generate_random_cars_left()
+
+if __name__ == "__main__":
+    main()
+
